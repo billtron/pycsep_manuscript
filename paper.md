@@ -133,9 +133,8 @@ dependent t-test we find a *p*-value of 6.41x10$^{-2}$. The independent t-test f
 \autoref{fig:convergence-test} shows a convergence test of the quantile scores from evaluations of the forecast by
 @Helmstetter2007a using `pyCSEP` and @Zechar2013a. We vary the number of random trials used to compute the `pyCSEP` quantiles
 scores and compare them against the scores from @Zechar2013a. We plot the percent difference in quantile scores against the
-number of random trials used to calculate it. We find that the two methods converge to within 1% after approximately 1x10$^5$
-simulations.  Scores are typically assessed at quantile scores of 0.05 for one-sided and 0.025 for two-sided tests, therefore
-maximum differences of around 1x10$^{-3}$ are acceptable. 
+number of random trials used to calculate it. We find that the two methods converge to within 1% after approximately 5x10$^4$
+random trials. The evaluations of the forecast are typically assessed at quantile scores of 0.05 for one-sided and 0.025 for two-sided tests, therefore maximum differences of around 1.0x10$^{-3}$ are acceptable. 
 
 ![Convergence test for evaluations of the forecast by @Helmstetter2007a. We plot the percent difference between quantiles
 determined by pyCSEP and Zechar et al. (2013) as a function of the number of random simulations. Tests are distinguished by
@@ -146,7 +145,8 @@ We observe small differences (~0.5% relative percent difference) across all eval
 failt to reject the hypothesis that `pyCSEP` and @Zechar2013a are different from a more formal t-test. From this, we conclude
 `pyCSEP` sufficiently reproduces the results from @Zechar2013a. One likely cause of the differences comes from a custom
 implementation of a pseudo-random number generator used in the testing centers. `pyCSEP` uses random number generators provided
-by `numpy` and `scipy`. The N-test is deterministic (no random trials) so it can act as a baseline to assess other causes of error. 
+by `numpy`. The N-test is deterministic (no random trials) so it can be used to quantify other causes of error, such as
+rounding and machine precision. 
 
 
 # Acknowledgements
