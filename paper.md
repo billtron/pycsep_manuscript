@@ -55,16 +55,16 @@ seismicity.  To what degree earthquakes can be predicted remains an open and imp
 As @Schorlemmer2018a states "the fundamental idea of CSEP is simple in principle but complex in practice: earthquake forecasts
 should be tested against future observations to assess their performance, thereby ensuring an unbiased test of the forecasting
 power of a model." Practically, this requires a prospective evaluation of the earthquake forecasts. Prospective evaluation
-requires that model developers fully specify their models (with zero-degrees of freedom) before the evaluations begin
-[@Schorlemmer2018a]. Specific parameters for an experiment are determined through community consensus. This includes parameters
-such as the geographic testing region and magnitude range, authoritative data sets used to evaluate the forecasts, the
-evaluation metrics, and precise specification of a forecast. These parameters are defined in full before the start of the
-experiment. This standardization ensures that any potential conscious or unconscious biases are reduced, because the evaluation data are
-collected after each model has been provided for evaluation.
+requires that model developers fully specify their models (with zero-degrees of freedom) before the experiment begins
+[@Schorlemmer2018a]. Specific parameters for an experiment are determined through community consensus, such as the geographic
+testing region and magnitude range, authoritative data sets used to evaluate the forecasts, the evaluation metrics, and the precise
+specification of a forecast. These parameters are defined in full before the start of the experiment. This standardization
+ensures that any potential conscious or unconscious biases are reduced, because the evaluation data are collected after each
+model has been provided for evaluation.
 
 # Statement of need
 
-Over the last decade, the CSEP has led numerous prospective earthquake forecasting experiments [see, e.g., @Michael2018a]. These
+Over the last decade, CSEP has led numerous prospective earthquake forecasting experiments [see, e.g., @Michael2018a]. These
 experiments are formally conducted within testing centers [@Schorlemmer2007b] that contain the software required to
 autonomously run and evaluate earthquake forecasts in a fully prospective mode. The software design emphasized a carefully
 controlled computing and software environment which ensured integrity of testing results [@Zechar2009a]. However, the
@@ -81,12 +81,11 @@ resillient europe (RISE)](http://www.rise-eu.org/home) project and others.
 
 # pyCSEP Overview
 
-`pyCSEP` provides an open-source implementation of peer-reviewed statistical tests developed to evaluate probabalistic
+`pyCSEP` provides an open-source implementation of peer-reviewed statistical tests developed for evaluating probabalistic
 earthquake forecasts [@Schorlemmer2007a; @Werner2011a; @Rhoades2011a; @Zechar2013a; @Savran2020a]. In addition, `pyCSEP`
-provides utilities for working with earthquake catalogs and visualizations. The fundamental design of `pyCSEP` can be described
-by two layers. An inner layer constists of core `pyCSEP` objects (Python classes) that represent earthquake forecasts,
-catalogs, and spatial regions. An outer layer provides a higher-level interface containing routines for common tasks
-in evaluating forecasts. This approach provides easy access to any developer interested in using `pyCSEP`. 
+provides routines for working with earthquake catalogs and visualizations. The core design of `pyCSEP` includes classes that
+represent earthquake forecasts, catalogs, and various spatial regions. Higher level functions are implemented using these
+classes to provide routines for common tasks in evaluating earthquake forecasts. 
 
 Earthquake forecasts can either be specified as expected earthquake rates over discrete space-magnitude-time regions
 [@Schorlemmer2007a] or as families of synthetic earthquake catalogs with each catalog representing a realization from the
@@ -103,58 +102,57 @@ visualization purposes. `pyCSEP` provides pre-defined spatial regions that have 
 
 `pyCSEP` interfaces directly with popular numerical and plotting libraries such as `Numpy`, `matplotlib`, and `pandas`.
 Users already familiar with these librarys can adapt `pyCSEP` directly into their code. `pyCSEP` provides file-formats
-for forecasts and earthquake catalogs, and can accommodate users' bespoke file formats with ease. 
+for forecasts and earthquake catalogs, and can allow users to specify custom filetypes.
 
 # Reproducibility of previous software  
 
-`pyCSEP` should be able to reproduce, in a statistical sense, results from experiments run in testing centers. Results
-represent outcomes from statistical testing used to compare forecasts against observations. The results are reported as
-quantile scores, which measure the consistency between forecasts and data. Quantile scores are computed by simulating the
-uncertainty in the forecast distribution and comparing against observations. This process uses random trials and is inherently
-not deterministic unless seed numbers or random numbers are preserved. We reproduce results from @Zechar2013a using
-`pyCSEP` to show consistency between the sets of results, and point out differences that might arise from rounding and other
-factors. Due to differences in computing environment and pseudo-random number generators we cannot guarantee exact
-reproducibility. We chose a subset of results from @Zechar2013a referred to in their manuscript as the mainshock+aftershock forecasts
-group. We demonstrate reproducibility of results in two ways; first, by comparing the error between `pyCSEP` and @Zechar2013a;
-and second, by performing a convergence test based on the number of random trials in calculating the quantile scores. 
+`pyCSEP` should be able to reproduce, in a statistical sense, results from experiments run in testing centers. These results
+are outcomes from statistical testing used to compare forecasts against observations. The result of the statistical test is the
+quantile score, which measures the consistency between forecasts and data. Quantile scores are computed by simulating the the
+forecasting distribution and comparing against observations. This process uses random trials and is inherently not
+deterministic unless seed numbers or random numbers are preserved. We reproduce results from @Zechar2013a using `pyCSEP` to
+show consistency between the sets of results, and discuss differences. We chose a subset of results from @Zechar2013a referred
+to in their manuscript as the mainshock+aftershock forecasts group. We demonstrate reproducibility of results in two ways;
+first, by comparing the error between `pyCSEP` and @Zechar2013a; and second, by performing a convergence test based on the
+number of random trials in calculating the quantile scores. 
 
 ![Error in quantile scores computed between @Zechar2013a and `pyCSEP`. Scores are oriented where positive values indicate
 @Zechar2013a score is greater. The shaded gray region depicts the standard error of the difference between @Zechar2013a and
-`pyCSEP`. Quantile scores are computed in pyCSEP and @Zechar2013a using 1,000,000
-simulations.\label{fig:consistency-test}](./figures/consistency_comparison_sims_1e6.pdf){width=75%}
+`pyCSEP`. Quantile scores are computed using 1,000,000 random
+trials.\label{fig:consistency-test}](./figures/consistency_comparison_sims_1e6.pdf){width=75%}
 
 \autoref{fig:consistency-test} shows the difference between quantile scores as determined by @Zechar2013a and `pyCSEP` computed
-using 1,000,000 random trials. The largest differences are observed to be 1.6x10$^{-3}$ units with an average difference of
-1.9x10$^{-4}$ considering all forecasts and tests. We formalize this by computing dependent and independent t-tests between these
-sets. We chose the dependent t-test, because the quantile scores are computed using the same forecasts and observations. The
-independent t-test is also shown for completeness. We fail to reject the null-hypothesis from a dependent t-test over two sets
-of quantile scores with a p-value of 6.41x10$^{-2}$. The independent t-test for these samples produces a *p*-value of
+using 1,000,000 random trials. The largest differences are observed at 1.6x10$^{-3}$ units with an difference of 1.9x10$^{-4}$
+averaged across all forecasts and tests. We formalize this by computing dependent and independent paired t-tests between the
+sets of quantile scores. We prefer the dependent t-test, because the quantile scores are computed using the same forecasts and
+observations. We also show an independent t-test for reference. In both tests, we fail to reject the null-hypothesis. For the
+dependent t-test we find a *p*-value of 6.41x10$^{-2}$. The independent t-test for these samples produces a *p*-value of
 9.98x10$^{-1}$. The shaded region on the plot shows the standard error of the mean differences between @Zechar2013a and
 `pyCSEP`.
 
-\autoref{fig:convergence-test} shows the test of convergence of the quantile scores that evaluate the forecast by
-@Helmstetter2007a using `pyCSEP` and @Zechar2013a. We plot the quantile score as a function of the number of random trials used
-to sample the probability distribution of the forecast, thereby estimating the quantile score. We find that differences in
-evaluation scores in quantile scores converge after approximately 1x10$^5$ simulations. Scores are typically assessed at
-quantile scores of 0.05 for one-sided and 0.025 for two-sided tests, therefore maximum differences of around 1x10$^{-3}$ are
-acceptable. The maximum relative error between across all pairs of quantile scores for the forecast by @Helmstetter2007a is
-0.36% or 1.6x10$^{-3}$ in absolute units. These differences are reported for 1,000,000 random trials.
-
-We observe small differences (~0.5% relative percent difference) across all evaluation pairs from the converage test, and we
-cannot reject the hypothesis that `pyCSEP` and @Zechar2013a are different from a more formal t-test. From this, we conclude
-that these results are reproducibile at least statistically. One likely cause of the differences comes from a custom
-implementation of a pseudo-random number generator used in the testing centers. `pyCSEP` uses random number generators provided
-by `numpy` and `scipy`, whereas CSEP testing centers used a custom random number generator. The N-test is deterministic (no
-random trials) so it can act as a baseline to assess other causes of error. 
+\autoref{fig:convergence-test} shows a convergence test of the quantile scores from evaluations of the forecast by
+@Helmstetter2007a using `pyCSEP` and @Zechar2013a. We vary the number of random trials used to compute the `pyCSEP` quantiles
+scores and compare them against the scores from @Zechar2013a. We plot the percent difference in quantile scores against the
+number of random trials used to calculate it. We find that the two methods converge to within 1% after approximately 1x10$^5$
+simulations.  Scores are typically assessed at quantile scores of 0.05 for one-sided and 0.025 for two-sided tests, therefore
+maximum differences of around 1x10$^{-3}$ are acceptable. 
 
 ![Convergence test for evaluations of the forecast by @Helmstetter2007a. We plot the percent difference between quantiles
 determined by pyCSEP and Zechar et al. (2013) as a function of the number of random simulations. Tests are distinguished by
 different colors and the shaded gray region represents a relative difference of 1\% [-0.5%,
 0.5%].\label{fig:convergence-test}](./figures/convergence_test_1e6.pdf){width=100%} 
 
+We observe small differences (~0.5% relative percent difference) across all evaluation pairs from the converage test, and we
+failt to reject the hypothesis that `pyCSEP` and @Zechar2013a are different from a more formal t-test. From this, we conclude
+`pyCSEP` sufficiently reproduces the results from @Zechar2013a. One likely cause of the differences comes from a custom
+implementation of a pseudo-random number generator used in the testing centers. `pyCSEP` uses random number generators provided
+by `numpy` and `scipy`. The N-test is deterministic (no random trials) so it can act as a baseline to assess other causes of error. 
+
+
 # Acknowledgements
 
-[Funding contributions go here.]
+This research was supported by the Southern California Earthquake Center (Contribution No. 11030). SCEC is funded by NSF
+Cooperative Agreement EAR-1600087 & USGS Cooperative Agreement G17AC00047. Maximilian J. Werner and Danijel Schorlemmer received funding from the European Union’s Horizon 2020 research and innovation program (Number 821115, RISE: Real-Time Earthquake Risk Reduction for a Resilient Europe) 
 
 # References
 
