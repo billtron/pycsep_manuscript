@@ -25,6 +25,7 @@ affiliations:
       index: 3 
 date: 01 February 2021 
 bibliography: paper.bib 
+
 ---
 
 # Summary
@@ -103,51 +104,6 @@ visualization purposes. `pyCSEP` provides pre-defined spatial regions that have 
 `pyCSEP` interfaces directly with popular numerical and plotting libraries such as `Numpy`, `matplotlib`, and `pandas`.
 Users already familiar with these librarys can adapt `pyCSEP` directly into their code. `pyCSEP` provides file-formats
 for forecasts and earthquake catalogs, and can allow users to specify custom filetypes.
-
-# Reproducibility of previous software  
-
-`pyCSEP` should be able to reproduce, in a statistical sense, results from experiments run in testing centers. These results
-are outcomes from statistical testing used to compare forecasts against observations. The result of the statistical test is the
-quantile score, which measures the consistency between forecasts and data. Quantile scores are computed by simulating the the
-forecasting distribution and comparing against observations. This process uses random trials and is inherently not
-deterministic unless seed numbers or random numbers are preserved. We reproduce results from @Zechar2013a using `pyCSEP` to
-show consistency between the sets of results, and discuss differences. We chose a subset of results from @Zechar2013a referred
-to in their manuscript as the mainshock+aftershock forecasts group. We demonstrate reproducibility of results in two ways;
-first, by comparing the error between `pyCSEP` and @Zechar2013a; and second, by performing a convergence test based on the
-number of random trials in calculating the quantile scores. 
-
-![Error in quantile scores computed between @Zechar2013a and `pyCSEP`. Scores are oriented where positive values indicate
-@Zechar2013a score is greater. The shaded gray region depicts the standard error of the difference between @Zechar2013a and
-`pyCSEP`. Quantile scores are computed using 1,000,000 random
-trials.\label{fig:consistency-test}](./figures/consistency_comparison_sims_1e6.pdf){width=75%}
-
-\autoref{fig:consistency-test} shows the difference between quantile scores as determined by @Zechar2013a and `pyCSEP` computed
-using 1,000,000 random trials. The largest differences are observed at 1.6x10$^{-3}$ units with an difference of 1.9x10$^{-4}$
-averaged across all forecasts and tests. We formalize this by computing dependent and independent paired t-tests between the
-sets of quantile scores. We prefer the dependent t-test, because the quantile scores are computed using the same forecasts and
-observations. We also show an independent t-test for reference. In both tests, we fail to reject the null-hypothesis. For the
-dependent t-test we find a *p*-value of 6.41x10$^{-2}$. The independent t-test for these samples produces a *p*-value of
-9.98x10$^{-1}$. The shaded region on the plot shows the standard error of the mean differences between @Zechar2013a and
-`pyCSEP`.
-
-\autoref{fig:convergence-test} shows a convergence test of the quantile scores from evaluations of the forecast by
-@Helmstetter2007a using `pyCSEP` and @Zechar2013a. We vary the number of random trials used to compute the `pyCSEP` quantiles
-scores and compare them against the scores from @Zechar2013a. We plot the percent difference in quantile scores against the
-number of random trials used to calculate it. We find that the two methods converge to within 1% after approximately 5x10$^4$
-random trials. The evaluations of the forecast are typically assessed at quantile scores of 0.05 for one-sided and 0.025 for two-sided tests, therefore maximum differences of around 1.0x10$^{-3}$ are acceptable. 
-
-![Convergence test for evaluations of the forecast by @Helmstetter2007a. We plot the percent difference between quantiles
-determined by pyCSEP and Zechar et al. (2013) as a function of the number of random simulations. Tests are distinguished by
-different colors and the shaded gray region represents a relative difference of 1\% [-0.5%,
-0.5%].\label{fig:convergence-test}](./figures/convergence_test_1e6.pdf){width=100%} 
-
-We observe small differences (~0.5% relative percent difference) across all evaluation pairs from the converage test, and we
-failt to reject the hypothesis that `pyCSEP` and @Zechar2013a are different from a more formal t-test. From this, we conclude
-`pyCSEP` sufficiently reproduces the results from @Zechar2013a. One likely cause of the differences comes from a custom
-implementation of a pseudo-random number generator used in the testing centers. `pyCSEP` uses random number generators provided
-by `numpy`. The N-test is deterministic (no random trials) so it can be used to quantify other causes of error, such as
-rounding and machine precision. 
-
 
 # Acknowledgements
 
